@@ -203,8 +203,24 @@ def get_example():
     ]
 
 
-def run_for_examples(face_file, prompt, style, negative_prompt):
-    return generate_image(face_file, None, prompt, negative_prompt, style, 30, 0.8, 0.8, 5, 42, False, True)
+def run_for_examples(model_path, max_side, min_side, face_file, prompt, style, negative_prompt):
+    return generate_image(
+        model_path,
+        max_side,
+        min_side,
+        face_file,
+        None,
+        prompt,
+        negative_prompt,
+        style,
+        30,
+        0.8,
+        0.8,
+        5,
+        42,
+        False,
+        True
+    )
 
 
 def convert_from_cv2_to_image(img: np.ndarray) -> Image:
@@ -564,7 +580,7 @@ def launch_ui(launch_kwargs, model_path, enable_lcm_arg, max_side, min_side):
 
         gr.Examples(
             examples=get_example(),
-            inputs=[face_file, prompt, style, negative_prompt],
+            inputs=[model_path, max_side, min_side, face_file, prompt, style, negative_prompt],
             run_on_click=True,
             fn=run_for_examples,
             outputs=[gallery, usage_tips],
