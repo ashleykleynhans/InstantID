@@ -87,7 +87,7 @@ controlnet_path = f"./{CHECKPOINT_DIRECTORY}/ControlNetModel"
 controlnet = ControlNetModel.from_pretrained(controlnet_path, torch_dtype=torch_dtype)
 
 
-def get_pipeline(model_path):
+def get_pipeline(model_path, enable_lcm):
     if model_path.endswith(
         ".ckpt"
     ) or model_path.endswith(".safetensors"):
@@ -138,9 +138,9 @@ def get_pipeline(model_path):
         pipe.image_proj_model.to(device)
         pipe.unet.to(device)
 
-    # Load and disable LCM
-    pipe.load_lora_weights("latent-consistency/lcm-lora-sdxl")
-    pipe.disable_lora()
+    if enable_lcm:
+        pipe.load_lora_weights("latent-consistency/lcm-lora-sdxl")
+        pipe.enable_lora()
 
     return pipe
 
@@ -351,7 +351,7 @@ def generate_image(model_path, face_image_path, pose_image_path, prompt, negativ
     logging.info(f"Prompt: {prompt}")
     logging.info(f"Negative Prompt: {negative_prompt}")
 
-    pipe = get_pipeline(model_path)
+    pipe = get_pipeline(model_path, enable_lcm)
     pipe.set_ip_adapter_scale(adapter_strength_ratio)
 
     if enable_lcm:
