@@ -25,7 +25,7 @@ from huggingface_hub import hf_hub_download
 from insightface.app import FaceAnalysis
 
 from style_template import styles
-from pipelines.pipeline_stable_diffusion_xl_instantid_full import StableDiffusionXLInstantIDPipeline
+from pipeline_stable_diffusion_xl_instantid_full import StableDiffusionXLInstantIDPipeline
 from model_util import load_models_xl
 
 import gradio as gr
@@ -425,7 +425,7 @@ def launch_ui(launch_kwargs, model_path, enable_lcm_arg, max_side, min_side):
 
     tips = r"""
     ### Usage tips of InstantID
-    1. If you're not satisfied with the similarity, try increasing the weight of "IdentityNet Strength" and "Adapter Strength."
+    1. If you're not satisfied with the similarity, try increasing the weight of "IdentityNet Strength" and "Adapter Strength."    
     2. If you feel that the saturation is too high, first decrease the Adapter strength. If it remains too high, then decrease the IdentityNet strength.
     3. If you find that text control is not as expected, decrease Adapter strength.
     4. If you find that realistic style is not good enough, go for our Github repo and use a more realistic base model.
