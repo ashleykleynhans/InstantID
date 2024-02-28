@@ -203,11 +203,11 @@ def get_example():
     ]
 
 
-def run_for_examples(model_path, max_side, min_side, face_file, prompt, style, negative_prompt):
+def run_for_examples(face_file, prompt, style, negative_prompt):
+    global model_path
+
     return generate_image(
         model_path,
-        max_side,
-        min_side,
         face_file,
         None,
         prompt,
@@ -288,9 +288,14 @@ def apply_style(style_name: str, positive: str, negative: str = "") -> Tuple[str
     return p.replace("{prompt}", positive), n + ' ' + negative
 
 
-def generate_image(model_path, max_side, min_side, face_image_path, pose_image_path, prompt, negative_prompt,
+def generate_image(model_path, face_image_path, pose_image_path, prompt, negative_prompt,
                    style_name, num_steps, identitynet_strength_ratio, adapter_strength_ratio, guidance_scale, seed,
                    enable_lcm, enhance_face_region, progress=gr.Progress(track_tqdm=True)):
+    global min_side, max_side
+
+    if model_path is None:
+        model_path = DEFAULT_MODEL
+
     if face_image_path is None:
         raise gr.Error(f"Cannot find any input face image! Please upload the face image")
 
@@ -370,7 +375,7 @@ def generate_image(model_path, max_side, min_side, face_image_path, pose_image_p
         generator=generator
     ).images
 
-    return images, gr.update(visible=True)
+    return images[0], gr.update(visible=True)
 
 
 def clear_cuda_cache():
@@ -405,7 +410,7 @@ def refresh_models(selected_model):
     )
 
 
-def launch_ui(launch_kwargs, model_path, enable_lcm_arg, max_side, min_side):
+def launch_ui(launch_kwargs, model_path, enable_lcm_arg):
     title = r"""
     <h1 align="center">InstantID: Zero-shot Identity-Preserving Generation in Seconds</h1>
     """
@@ -479,11 +484,11 @@ def launch_ui(launch_kwargs, model_path, enable_lcm_arg, max_side, min_side):
 
                 # Allow a different model to be selected by loading models from disk
                 # and displaying them in a dropdown
-                model_choices = [DEFAULT_MODEL] + get_available_models()
+                model_choices = [model_path] + get_available_models()
                 model = gr.Dropdown(
                     label="Model path",
                     choices=model_choices,
-                    value=DEFAULT_MODEL
+                    value=model_path
                 )
                 refresh_button = gr.Button("Refresh Models")
                 refresh_button.click(fn=refresh_models, inputs=model, outputs=model)
@@ -555,9 +560,7 @@ def launch_ui(launch_kwargs, model_path, enable_lcm_arg, max_side, min_side):
             ).then(
                 fn=generate_image,
                 inputs=[
-                    model_path,
-                    max_side,
-                    min_side,
+                    model,
                     face_file,
                     pose_file,
                     prompt,
@@ -580,11 +583,11 @@ def launch_ui(launch_kwargs, model_path, enable_lcm_arg, max_side, min_side):
 
         gr.Examples(
             examples=get_example(),
-            inputs=[model_path, max_side, min_side, face_file, prompt, style, negative_prompt],
+            inputs=[face_file, prompt, style, negative_prompt],
             run_on_click=True,
             fn=run_for_examples,
             outputs=[gallery, usage_tips],
-            cache_examples=True,
+            cache_examples=True
         )
 
         gr.Markdown(article)
@@ -613,6 +616,8 @@ if __name__ == "__main__":
 
     logging.getLogger("httpx").setLevel(logging.WARNING)
 
+    model_path = args.model_path
+
     if args.medvram:
         max_side, min_side = 1024, 832
     elif args.lowvram:
@@ -637,8 +642,6 @@ if __name__ == "__main__":
     logging.info(f'max_side: {max_side}, min_side: {min_side}')
     launch_ui(
         launch_kwargs,
-        model_path=args.model_path,
+        model_path=model_path,
         enable_lcm_arg=args.enable_lcm,
-        max_side=max_side,
-        min_side=min_side
     )
