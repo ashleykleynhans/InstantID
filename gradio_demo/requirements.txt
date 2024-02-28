@@ -5,7 +5,8 @@ transformers==4.37.2
 accelerate
 safetensors
 einops
-onnxruntime-gpu
+onnxruntime-gpu; sys_platform != 'darwin'
+onnxruntime; sys_platform == 'darwin'
 spaces==0.19.4
 omegaconf
 peft
