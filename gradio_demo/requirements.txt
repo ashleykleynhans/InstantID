@@ -10,7 +10,7 @@ onnxruntime; sys_platform == 'darwin'
 spaces==0.19.4
 omegaconf
 peft
-huggingface-hub==0.20.2
+huggingface-hub
 opencv-python
 insightface
 gradio==4.16.0
