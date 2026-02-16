@@ -165,4 +165,9 @@ models/
 # Cog
 .cog
 
+# Gradio cache
 gradio_cached_examples
+
+# IDE
+.idea
+.DS_Store
