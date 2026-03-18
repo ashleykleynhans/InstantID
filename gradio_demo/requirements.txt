@@ -10,11 +10,10 @@ onnxruntime; sys_platform == 'darwin'
 spaces==0.19.4
 omegaconf
 peft
-huggingface-hub<0.25
+huggingface-hub>=0.30.0,<1.0
 opencv-python
 insightface
 gradio==4.16.0
 controlnet_aux
 gdown
-peft
 mediapipe
