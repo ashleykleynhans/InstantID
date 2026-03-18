@@ -1,7 +1,7 @@
 diffusers==0.26.1
 torch
 torchvision
-transformers==4.37.2
+transformers==4.53.0
 accelerate
 safetensors
 einops
