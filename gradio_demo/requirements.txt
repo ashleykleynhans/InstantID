@@ -1,18 +1,18 @@
-diffusers==0.31.0
+diffusers>=0.37.1,<1.0
 torch
 torchvision
-transformers==4.53.0
-accelerate
+transformers>=4.57.6,<5.0
+accelerate>=0.34.2,<1.0
 safetensors
 einops
 onnxruntime-gpu; sys_platform != 'darwin'
 onnxruntime; sys_platform == 'darwin'
 spaces==0.19.4
 omegaconf
-peft
-huggingface-hub>=0.30.0,<1.0
+peft>=0.19.1,<1.0
+huggingface-hub>=0.36.2,<1.0
 opencv-python
-insightface
+insightface==0.7.3
 gradio==4.16.0
 controlnet_aux
 gdown
