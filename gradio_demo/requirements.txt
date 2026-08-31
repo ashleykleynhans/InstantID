@@ -1,4 +1,4 @@
-diffusers>=0.38.0,<1.0
+diffusers>=0.40.0,<1.0
 torch
 torchvision
 transformers>=4.57.6,<5.0
