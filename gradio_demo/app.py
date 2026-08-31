@@ -56,14 +56,12 @@ if not os.path.exists(os.path.join(CHECKPOINT_DIRECTORY, "ControlNetModel/config
         repo_id="InstantX/InstantID",
         filename="ControlNetModel/config.json",
         local_dir=CHECKPOINT_DIRECTORY,
-        local_dir_use_symlinks=False
     )
 if not os.path.exists(os.path.join(CHECKPOINT_DIRECTORY, "ControlNetModel/diffusion_pytorch_model.safetensors")):
     hf_hub_download(
         repo_id="InstantX/InstantID",
         filename="ControlNetModel/diffusion_pytorch_model.safetensors",
         local_dir=CHECKPOINT_DIRECTORY,
-        local_dir_use_symlinks=False
     )
 
 # Download IP-Adapter checkpoint from Hugging Face Hub if the files do not already exist
@@ -72,7 +70,6 @@ if not os.path.exists(os.path.join(CHECKPOINT_DIRECTORY, "ip-adapter.bin")):
         repo_id="InstantX/InstantID",
         filename="ip-adapter.bin",
         local_dir=CHECKPOINT_DIRECTORY,
-        local_dir_use_symlinks=False
     )
 
 # Load face encoder
